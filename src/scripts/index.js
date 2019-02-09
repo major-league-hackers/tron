@@ -6,14 +6,6 @@ socket.on('connect', e => console.log("socket.io connection open"));
 
 let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
 
-socket.on('init', id => {
-    let displayPlayer = document.createElement('h1');
-    displayPlayer.id = "player";
-    displayPlayer.innerText = "You are " + colors[id];
-    document.body.appendChild(displayPlayer);
-  });
-
-
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
@@ -21,6 +13,19 @@ const context = canvas.getContext("2d");
 const canvasSize = window.innerHeight * 0.9;
 canvas.width = canvasSize;
 canvas.height = canvasSize;
+
+
+socket.on('init', id => {
+    let displayPlayer = document.createElement('h1');
+    displayPlayer.id = "player";
+    displayPlayer.innerText = "You are " + colors[id];
+    document.body.appendChild(displayPlayer);
+
+    canvas.style.border = "5px solid " + colors[id];
+  });
+
+
+
 
 
 
