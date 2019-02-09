@@ -35,7 +35,11 @@ const hideWinText = () => {
 }
 
 socket.on("gameover", winner => {
-  showWinText(`${colors[winner]} won!`);
+  if (typeof winner === 'string') {
+    showWinText(`Tie!`);
+  } else {
+    showWinText(`${colors[winner]} won!`);
+  }
   setTimeout(() => {
     joinGame();
     hideWinText();

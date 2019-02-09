@@ -7,7 +7,7 @@ class TronPlayer {
     this.id;
     this.name = name;
     this.isAlive = true;
-    this.direction = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
+    this.direction = Math.round(Math.random() * 3) + 1;  // results in random between 1 and 4
     this.x_pos = Math.round(Math.random() * 80) + 10;
     this.y_pos = Math.round(Math.random() * 80) + 10;
   }
@@ -161,11 +161,13 @@ class TronGame {
         count++;
       }
     }
-    const gameover = count === 1
-    if (gameover) {
+    if (count === 1) {
       this.io.to(this.id).emit('gameover', lastAlive.id);
+      return gameover;
+    } else if (count === 0) {
+      this.io.to(this.id).emit('gameover', "Tie");
+      return gameover;
     }
-    return gameover;
   }
 
   destroy() {
