@@ -52,7 +52,7 @@ class TronPlayer {
       this.y_pos += 1;
     }
 
-    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos > 100 || this.y_pos > 100) {
+    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos >= 100 || this.y_pos >= 100) {
       this.kill();
       return;
     }
@@ -71,7 +71,7 @@ class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 1;
+const MAX_PLAYERS = 3;
 class TronGame {
   constructor(io) {
     this.io = io;
@@ -159,15 +159,12 @@ class TronGame {
         count++;
       }
     }
-    if(count == 0) {
-      return true;
-    }
-    return false;
+    return count === 1;
   }
 
   destroy() {
-    this.io.to(this.id).emit('gameover');
     for (let player of this.getPlayerArray()) {
+      player.socket.emit('gameover');
       player.socket.leave(this.id);
     }
   }
