@@ -7,9 +7,11 @@ class TronPlayer {
     this.id;
     this.name = name;
     this.isAlive = true;
-    this.direction = Math.round(Math.random() * 3) + 1;  // results in random between 1 and 4
-    this.x_pos = Math.round(Math.random() * 80) + 10;
-    this.y_pos = Math.round(Math.random() * 80) + 10;
+
+
+    // this.direction = Math.round(Math.random() * 3) + 1;  // results in random between 1 and 4
+    // this.x_pos = Math.round(Math.random() * 80) + 10;
+    // this.y_pos = Math.round(Math.random() * 80) + 10;
 
 
   }
@@ -21,6 +23,40 @@ class TronPlayer {
   setId(id) {
     this.id = id;
     this.socket.emit("init", this.id);
+
+    if (this.id === 1){
+      this.x_pos = 33;
+      this.y_pos = 20;
+      this.direction = 2;
+    } else if (this.id === 2) {
+      this.x_pos = 33;
+      this.y_pos = 40;
+      this.direction = 2;      
+    } else if (this.id === 3) {
+      this.x_pos = 33;
+      this.y_pos = 60;
+      this.direction = 2;      
+    } else if (this.id === 4) {
+      this.x_pos = 33;
+      this.y_pos = 80;
+      this.direction = 2;      
+    } else if (this.id === 5) {
+      this.x_pos = 66;
+      this.y_pos = 20;
+      this.direction = 1;      
+    } else if (this.id === 6) {
+      this.x_pos = 66;
+      this.y_pos = 40;
+      this.direction = 1;      
+    } else if (this.id === 7) {
+      this.x_pos = 66;
+      this.y_pos = 60;
+      this.direction = 1;      
+    } else if (this.id === 8) {
+      this.x_pos = 66;
+      this.y_pos = 80;
+      this.direction = 1;      
+    }
   }
 
   setDirection(direction) {
@@ -78,7 +114,7 @@ class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 2;
+const MAX_PLAYERS = 8;
 class TronGame {
   constructor(io) {
     this.io = io;

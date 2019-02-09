@@ -4,6 +4,9 @@ const socket = new io.connect(window.location.href.replace(/^http/, "ws"));
 socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
+
+let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White", "Lime"];
+
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
