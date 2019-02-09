@@ -6,12 +6,13 @@ socket.on('connect', e => console.log("socket.io connection open"));
 
 let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
 
+let displayPlayer = document.createElement('h1');
+displayPlayer.id = "player";
+
 socket.on('init', id => {
-    let displayPlayer = document.createElement('h1');
-    displayPlayer.id = "player";
-    displayPlayer.innerText = "You are " + colors[id];
-    document.body.appendChild(displayPlayer);
-  });
+  displayPlayer.innerText = "You are " + colors[id];
+  document.body.appendChild(displayPlayer);
+});
 
 
 let canvas = document.createElement('canvas');
@@ -23,6 +24,10 @@ canvas.width = canvasSize;
 canvas.height = canvasSize;
 
 
+// Display text
+let displayText = document.createElement('h1');
+displayText.id = "text";
+document.body.appendChild(displayText);
 
 const joinGame = () => {
   socket.emit('join', "Mark");
@@ -30,25 +35,33 @@ const joinGame = () => {
   context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-const showWinText = (text) => {
+const showMainText = (text) => {
   displayText.innerText = text;
   displayText.style.display = "block";
 }
 
-const hideWinText = () => {
+const hideMainText = () => {
   displayText.style.display = "none";
 }
 
 socket.on("gameover", winner => {
   if (typeof winner === 'string') {
-    showWinText(`Tie!`);
+    showMainText(`Tie!`);
   } else {
-    showWinText(`${colors[winner]} won!`);
+    showMainText(`${colors[winner]} won!`);
   }
-  setTimeout(() => {
-    joinGame();
-    hideWinText();
-  }, 3000);
+  let counter = 3;
+  const countdown = () => setTimeout(() => {
+    showMainText(`Rejoining in ${counter}`)
+    if (counter === 0) {
+      joinGame();
+      hideMainText();
+    } else {
+      counter -= 1;
+      countdown();
+    }
+  }, 1000);
+  countdown();
 });
 
 
