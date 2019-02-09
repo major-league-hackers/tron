@@ -91,8 +91,8 @@ class TronGame {
   addPlayer(player) {
     this.players[player.socketId] = player;
     player.setId(this.getPlayerArray().length);
-    console.log(this.getPlayerArray());
-    console.log(this.getPlayerArray().length);
+    // console.log(this.getPlayerArray());
+    // console.log(this.getPlayerArray().length);
     if (this.getPlayerArray().length === MAX_PLAYERS) {
       this.startGame();
     }
@@ -140,8 +140,8 @@ class TronGame {
   sendData() {
     //print some stuff
     for (let player of this.getPlayerArray()) {
-      console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
-      console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
+      // console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
+      // console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
     }
     this.io.sockets.emit('update', this.grid);
   }
