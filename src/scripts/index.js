@@ -4,13 +4,6 @@ const socket = new io.connect(window.location.href.replace(/^http/, "ws"));
 socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
-socket.on("gameover", () => {
-  console.log("Game Over");
-  socket.emit('join', "Mark");
-});
-
-socket.emit('join', "Mark");
-
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
@@ -18,9 +11,20 @@ canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
-context.fillStyle = "Black";
-context.fillRect(0,0,600,600);
 
+const joinGame = () => {
+  socket.emit('join', "Mark");
+  context.fillStyle = "Black";
+  context.fillRect(0,0,600,600);
+}
+
+socket.on("gameover", () => {
+  console.log("Game Over");
+  joinGame();
+});
+
+
+joinGame();
 
 let colors = ["Black", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
 
@@ -47,8 +51,8 @@ function draw() {
   let tileSize = canvas.width / 100;
   for (let i = 0; i < newGrid.length; i++) {
     for (let j = 0; j < newGrid.length; j++) {
-      context.fillStyle = colors[newGrid[i][j]];
       if (newGrid[i][j] !== 0) {
+        context.fillStyle = colors[newGrid[i][j]];
       	context.fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
       }
     }
