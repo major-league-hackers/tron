@@ -11,6 +11,11 @@ canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
+<<<<<<< Updated upstream
+=======
+//context.fillStyle = "Black";
+//context.fillRect(0,0,600,600);
+>>>>>>> Stashed changes
 
 const joinGame = () => {
   socket.emit('join', "Mark");
@@ -64,7 +69,7 @@ function draw() {
 // draw();
 
 window.addEventListener('keydown', function(e) {
-  if (e.keyCode == 38) { 			//up
+  if (e.keyCode == 38) { 			    //up
   	socket.emit('direction', 3);
   } else if (e.keyCode == 39) { 	//right
 	socket.emit('direction', 1);
