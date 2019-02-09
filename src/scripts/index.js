@@ -22,7 +22,7 @@ document.body.appendChild(displayText);
 const joinGame = () => {
   socket.emit('join', "Mark");
   context.fillStyle = "Black";
-  context.fillRect(0, 0, 600, 600);
+  context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 const showWinText = (text) => {
