@@ -39,6 +39,7 @@ const startCountdown = (game) => {
     } else {
       count -= 1;
       game.io.to(game.id).emit('countdown', count);
+      game.sendData();
     }
     countdown();
   }, 1000);
@@ -61,10 +62,6 @@ io.on('connection', socket => {
     waitingGame.addPlayer(socket, name);
     // Remember the game that the player is in
     activePlayers[socket.id] = waitingGame.id;
-    if (waitingGame.gameIsFull()) {
-      // Since the waiting game is full, add it to active games
-      activateGame(waitingGame);
-    }
   });
   socket.on('direction', direction => {
     const game = getGameForPlayer(socket.id);

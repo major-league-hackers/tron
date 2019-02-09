@@ -20,7 +20,7 @@ class TronPlayer {
     return [this.id, this.name];
   }
 
-  setId(id) {
+  setId(id, grid) {
     this.id = id;
     this.socket.emit("init", this.id);
 
@@ -57,6 +57,7 @@ class TronPlayer {
       this.y_pos = 80;
       this.direction = 1;
     }
+    grid[this.x_pos][this.y_pos] = this.id;
   }
 
   setDirection(direction) {
@@ -126,10 +127,9 @@ class TronGame {
 
   addPlayer(socket, name) {
     this.players[socket.id] = new TronPlayer(socket, name);
-    this.players[socket.id].setId(this.getPlayerArray().length);
+    this.players[socket.id].setId(this.getPlayerArray().length, this.grid);
     // console.log(this.getPlayerArray());
     // console.log(this.getPlayerArray().length);
-    this.sendData();
   }
 
   removePlayer(socketId) {
