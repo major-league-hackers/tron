@@ -2,6 +2,7 @@ html {
 	background: black;
 	color: white;
 	overflow: hidden;
+	font: sans-serif;
 }
 
 #canvas {
@@ -12,6 +13,8 @@ html {
 }
 
 #text {
+	background: black;
+	border: 5px solid black;
 	display: none;
 	position: fixed; /* or absolute */
   top: 50%;
