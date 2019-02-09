@@ -6,6 +6,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 
+const game = require('./server/game.js');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', express.static(path.join(__dirname, 'public')));
@@ -31,6 +33,7 @@ const loop = () => {
     setTimeout(loop, tickLengthMs)
     let now = hrtimeMs();
     let delta = (now - previous) / 1000;
+    game.tick();
     // game.update(delta, tick) // game logic would go here
     previous = now
     tick++
