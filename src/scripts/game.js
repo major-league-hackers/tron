@@ -10,11 +10,6 @@ canvas.height = 800;
 
 let colors = ["Chartreuse", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
 
-let top_wall = 0;
-let bot_wall = canvas.height;
-let right_wall = canvas.width;
-let left_wall = 0;
-
 let direction = 0;
 
 let newGrid = new Array(100);
