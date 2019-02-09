@@ -43,35 +43,33 @@ class TronPlayer {
     if (direction == 1) {
       //move the head
       this.x_pos += 1;
-      this.currentDirection = 1;
 
       //left
     } else if (direction == 2) {
       //move the head
       this.x_pos -= 1;
-      this.currentDirection = 2;
 
       //up
-    } else if (direction == 3){
+    } else if (direction == 3) {
       //move the head
       this.y_pos -= 1;
-      this.currentDirection = 3;
 
       //down
-    } else if (direction == 4){
-
+    } else if (direction == 4) {
       //move the head
       this.y_pos += 1;
-      this.currentDirection = 4;
     }
 
-    let id = grid[this.x_pos][this.y_pos]
-    if (id !=  0) {
-      this.kill();
+    const id = grid[this.x_pos][this.y_pos];
+    console.log(id);
+    if (id !==  0) {
+      console.log('Kill player 1');
+      // this.kill();
     }
 
-    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos  > 100 || this.y_pos > 100) {
-      this.kill();
+    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos > 100 || this.y_pos > 100) {
+      console.log('Kill player 2');
+      // this.kill();
     }
 
     grid[this.x_pos][this.y_pos] = this.id;
@@ -82,7 +80,7 @@ class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 4;
+const MAX_PLAYERS = 1;
 class TronGame {
   constructor(io) {
     this.io = io;
@@ -118,9 +116,6 @@ class TronGame {
         player.move(this.grid);
       }
       this.sendData();
-      // if (endGame()) {
-      //   newGame();
-      // }
     }
   }
 
@@ -134,6 +129,7 @@ class TronGame {
   }
 
   setPlayerDirection(socketId, direction) {
+    console.log(`${socketId}: ${direction}`);
     this.players[socketId].setDirection(direction);
   }
 

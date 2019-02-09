@@ -5,20 +5,17 @@ socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
 socket.emit('join', "Mark");
-socket.on("update", data => console.log(data));
 
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
 canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
-canvas.style.width = '100%';
-canvas.width = 800;
-canvas.style.height = '100%';
-canvas.height = 800;
+canvas.width = 600;
+canvas.height = 600;
 
 
-let colors = ["Chartreuse", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
+let colors = ["Black", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
 
 let direction = 0;
 
@@ -30,12 +27,13 @@ for (let i = 0; i < newGrid.length; i++) {
 
 for (let i = 0; i < newGrid.length; i++) {
   for (let j = 0; j < newGrid.length; j++) {
-    newGrid[i][j] = Math.round(Math.random() * 9);
+    newGrid[i][j] = 0
   }
 }
 
+socket.on("update", data => data = newGrid);
 
-function drawCanvas() {
+function draw() {
   let tileSize = canvas.width / 100;
   for (let i = 0; i < newGrid.length; i++) {
     for (let j = 0; j < newGrid.length; j++) {
@@ -44,8 +42,9 @@ function drawCanvas() {
     }
   }
 
-  window.requestAnimationFrame(drawCanvas);
+  window.requestAnimationFrame(draw);
 }
+draw();
 
 window.addEventListener('keydown', function(e) {
   if (e.keyCode == 38) { 			//up
