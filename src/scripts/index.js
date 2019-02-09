@@ -24,8 +24,6 @@ socket.on('init', id => {
 });
 
 
-
-
 // Display text
 let displayText = document.createElement('h1');
 displayText.id = "text";
@@ -45,6 +43,10 @@ const showMainText = (text) => {
 const hideMainText = () => {
   displayText.style.display = "none";
 }
+
+socket.on('countdown', count => {
+  showMainText(`Starting in ${count}`);
+});
 
 socket.on("gameover", winner => {
   if (typeof winner === 'string') {

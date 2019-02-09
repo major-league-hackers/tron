@@ -22,14 +22,27 @@ const activeGames = {};
 // Stores the socketid and gameId
 const activePlayers = {};
 
-getGameForPlayer = (socketId) => {
+const getGameForPlayer = (socketId) => {
   const gameId = activePlayers[socketId];
   return activeGames[gameId];
+}
+
+const startCountdown = (game) => {
+  count = 5;
+  setTimeout(() => {
+    if (count === 0) {
+      game.startGame();
+    } else {
+      count -= 1;
+      game.io.to(game.id).emit('countdown', count);
+    }
+  }, 1000);
 }
 
 io.on('connection', socket => {
   socket.on('join', name => {
     console.log("Player joined");
+    startCountdown(waitingGame);
     // Join the unique room
     socket.join(waitingGame.id);
     // Add the player to the game

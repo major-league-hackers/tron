@@ -93,6 +93,7 @@ class TronGame {
     this.players[socket.id].setId(this.getPlayerArray().length);
     // console.log(this.getPlayerArray());
     // console.log(this.getPlayerArray().length);
+    this.sendData();
     if (this.getPlayerArray().length === MAX_PLAYERS) {
       this.startGame();
     }
