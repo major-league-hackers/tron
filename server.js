@@ -6,7 +6,9 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 
-import { TronGame, TronPlayer } from './server/game.js';
+const tron = require('./server/game.js');
+const TronGame = tron.TronGame;
+const TronPlayer = tron.TronPlayer;
 
 const APP_PATH = path.join(__dirname, 'dist');
 app.use(bodyParser.json());

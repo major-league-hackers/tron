@@ -9,7 +9,7 @@ let players = new Array(8);
 
 let running = false;
 
-export class TronPlayer {
+class TronPlayer {
   constructor(socketId, name) {
     this.socketId;
     this.id;
@@ -83,7 +83,7 @@ export class TronPlayer {
 }
 
 const MAX_PLAYERS = 4;
-export class TronGame {
+class TronGame {
   constructor(io) {
     this.io = io;
     this.running = false;
@@ -93,7 +93,7 @@ export class TronGame {
 
   addPlayer(player) {
     this.players[player.socketId] = player;
-    player.setId(this.player.length);
+    player.setId(this.players.length);
     if (this.players === MAX_PLAYERS) {
       this.startGame();
     }
@@ -103,7 +103,7 @@ export class TronGame {
   makeGrid() {
     let newGrid = new Array(100);
 
-    for (let i = 0; i < grid.length; i++) {
+    for (let i = 0; i < newGrid.length; i++) {
         newGrid[i] = new Array(100);
     }
 
@@ -139,6 +139,9 @@ export class TronGame {
     io.sockets.emit('update', this.grid);
   }
 }
+
+exports.TronGame = TronGame;
+exports.TronPlayer = TronPlayer;
 
 // function newGame() {
 //   grid = makeNewGrid();
