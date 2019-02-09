@@ -60,16 +60,15 @@ class TronPlayer {
       this.y_pos += 1;
     }
 
-    const id = grid[this.x_pos][this.y_pos];
-    console.log(id);
-    if (id !==  0) {
-      console.log('Kill player 1');
-      // this.kill();
+    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos > 100 || this.y_pos > 100) {
+      this.kill();
+      return;
     }
 
-    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos > 100 || this.y_pos > 100) {
-      console.log('Kill player 2');
-      // this.kill();
+    const id = grid[this.x_pos][this.y_pos];
+    if (id !==  0) {
+      this.kill();
+      return;
     }
 
     grid[this.x_pos][this.y_pos] = this.id;

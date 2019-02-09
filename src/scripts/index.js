@@ -31,7 +31,9 @@ for (let i = 0; i < newGrid.length; i++) {
   }
 }
 
-socket.on("update", data => data = newGrid);
+socket.on("update", data => {
+  newGrid = data
+});
 
 function draw() {
   let tileSize = canvas.width / 100;
