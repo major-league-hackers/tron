@@ -10,6 +10,9 @@ html {
 	background: "#727882";
 	border: 5px solid white;
 }
+#player{
+	z-index: -1;
+}
 
 #text {
 	display: none;
