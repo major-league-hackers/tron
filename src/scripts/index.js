@@ -6,11 +6,11 @@ socket.on('connect', e => console.log("socket.io connection open"));
 
 socket.emit('join', "Mark");
 
-const canvas = document.createElement('canvas');
+let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
 canvas = document.getElementById("canvas");
-context = canvas.getContext("2d");
+const context = canvas.getContext("2d");
 canvas.style.width = '100%';
 canvas.width = 800;
 canvas.style.height = '100%';
@@ -48,11 +48,11 @@ function drawCanvas() {
 
 window.addEventListener('keydown', function(e) {
   if (e.keyCode == 38) { 			//up
-  	socket.emit('direction', 3);    
+  	socket.emit('direction', 3);
   } else if (e.keyCode == 39) { 	//right
 	socket.emit('direction', 1);
   } else if (e.keyCode == 40) { 	//down
-  	socket.emit('direction', 4);    
+  	socket.emit('direction', 4);
   } else if (e.keyCode == 37){ 		//left
   	socket.emit('direction', 2);
   }
