@@ -1,12 +1,3 @@
-canvas = document.createElement('canvas');
-canvas = document.getElementById("canvas");
-context = canvas.getContext("2d");
-canvas.style.width ='100%';
-canvas.width = 800;
-canvas.style.height ='100%';
-canvas.height = 800;
-
-
 let top_wall = 0;
 let bot_wall = canvas.height;
 let right_wall = canvas.width;
@@ -16,65 +7,71 @@ let grid;
 
 let players = new Array(8);
 
-let colors = ["Chartreuse", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
+let running = false;
 
 function TronPlayer(id) {
   this.id = id;
   this.isAlive = true;
-  this.currentDirection = Math.round(Math.random() * 4) + 1;		// results in random between 1 and 4
+  this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
   this.x_pos = (Math.random * 80) + 10;
   this.y_pos = (Math.random * 80) + 10;
 }
 
-let tronplayer = {
-  id: -1,
-  isAlive: true,
-  currentDirection: 0,
-  x_pos: 50,
-  y_pos: 50,
-  color: "blue"
-};
-
-for (let i = 0; i < players.length; i++) {
-  move(players[i], )
-}
 
 function newGame() {
   grid = makeNewGrid();
   
-  // set player positions
+  running = false;
+  
+  for (let i = 0; i < players.length; i++) 
+    players[i].x_pos = (Math.random * 80) + 10;
+  players[i].y_pos = (Math.random * 80) + 10; 
+  }
 }
 
+// initialize a game grid 100x100 square
 function makeNewGrid() {
   let newGrid = new Array(100);
 
-	for (let i = 0; i < grid.length; i++) {
-  		newGrid[i] = new Array(100);
-	}
+  for (let i = 0; i < grid.length; i++) {
+      newGrid[i] = new Array(100);
+  }
   
   return newGrid;
 }
 
+
 function tick(){
-  for(l)
+    let timer = -1;
+    for (let i = 0; i < players.length; i++) {
+        if (running) {
+          move(players[i]);
+        } else {
+          if (players.length >=2 ) {
+            if  (timer == -1) {
+                timer = 10;
+            } else if (timer == 0) {
+        running = true;
+            } else {
+                timer -= 1;
+            }
+          } else {
+            timer = -1;
+          }
+        }
+      
+        sendData();
+  }
+  
+    if (endGame()) {
+      newGame();
+    }
 }
 
-function setDirection(player, direction) {
-  player.currentDirection = direction;
+function sendData() {
   
-  //handle key presses to change direction
-  window.addEventListener('keydown', function(e)) {
-    if (e.keyCode == 38) { //up
-    	player.currentDirection = 3;
-    } else if (e.keyCode == 39) { //right
-      player.currentDirection = 1;
-    } else if (e.keyCode == 40) { //down
-      player.currentDirection = 4;
-    } else if (e.keyCode == 37){ //left
-      player.currentDirection = 2
-    }
-  }
 }
+
 
 //right = 1
 //left = 2
@@ -88,7 +85,7 @@ function move(player) {
     //move the head
     player.x_pos += 1;
     player.currentDirection = 1;
-  	
+    
     //left
   } else if (direction == 2) {
     //move the head
@@ -109,12 +106,12 @@ function move(player) {
     player.currentDirection = 4;
   }
   
-  grid[player.x_pos][player.y_pos] = player.id;
-  
   let id = grid[player.x_pos][player.y_pos]
-  if ( id !=  0 && id != player.id) {
+  if ( id !=  0) {
     killPlayer(player);
   }
+  
+  grid[player.x_pos][player.y_pos] = player.id;
   
   if (player.x_pos < 0 || player.y_pos < 0 || player.x_pos  > canvas.width || player.y_pos > canvas.height) {
     killPlayer(player);
@@ -127,9 +124,23 @@ function killPlayer(player) {
 }
 
 function getHead(player){
-  	return [player.x_pos, player.y_pos];
+    return [player.x_pos, player.y_pos];
 };
-    
-    
+
+// return true if there is only one player left alive
+function endGame(players) {
+  let count = 0;
+  for(let i = 0; i < players; i++) {
+    if(players[i].isAlive == true) {
+      count++;
+    }
+  }
+  if(count == 1) {
+    return true;
+  }
+  return false;
+}
+
+export { tick }
     
     
