@@ -94,7 +94,7 @@ class TronGame {
   addPlayer(player) {
     this.players[player.socketId] = player;
     player.setId(this.players.length);
-    if (this.players === MAX_PLAYERS) {
+    if (this.players.length === MAX_PLAYERS) {
       this.startGame();
     }
   }
@@ -123,6 +123,7 @@ class TronGame {
   }
 
   startGame() {
+    console.log("Starting game");
     this.running = true;
   }
 

@@ -19,6 +19,7 @@ app.use('/', express.static(APP_PATH));
 const game = new TronGame(io);
 io.on('connection', socket => {
   socket.on('join', name => {
+    console.log("Player joined");
 		const player = new TronPlayer(socket.id, name);
     game.addPlayer(player);
   });
