@@ -93,8 +93,8 @@ class TronGame {
 
   addPlayer(player) {
     this.players[player.socketId] = player;
-    player.setId(this.players.length);
-    if (this.players.length === MAX_PLAYERS) {
+    player.setId(getPlayerArray().length);
+    if (getPlayerArray().length === MAX_PLAYERS) {
       this.startGame();
     }
   }
@@ -112,7 +112,7 @@ class TronGame {
 
   tick() {
     if (this.running) {
-      for (let player in Object.values(this.players)) {
+      for (let player in getPlayerArray()) {
         player.move(this.grid);
       }
       sendData();
@@ -120,6 +120,10 @@ class TronGame {
       //   newGame();
       // }
     }
+  }
+
+  getPlayerArray() {
+    return Object.values(this.players);
   }
 
   startGame() {
