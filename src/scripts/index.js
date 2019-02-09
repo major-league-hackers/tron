@@ -8,8 +8,9 @@ let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
 const context = canvas.getContext("2d");
-canvas.width = 600;
-canvas.height = 600;
+const canvasSize = window.innerHeight * 0.9;
+canvas.width = canvasSize;
+canvas.height = canvasSize;
 
 let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
 

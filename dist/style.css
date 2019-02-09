@@ -7,7 +7,10 @@ html {
 
 #canvas {
 	display: block;
-	margin: 70px auto 0px auto;
+	position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 	background: "#727882";
 	border: 5px solid white;
 }
@@ -16,9 +19,8 @@ html {
 	background: black;
 	border: 5px solid black;
 	display: none;
-	position: fixed; /* or absolute */
+	position: fixed;
   top: 50%;
   left: 50%;
-  /* bring your own prefixes */
   transform: translate(-50%, -50%);
 }
