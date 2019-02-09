@@ -15,7 +15,9 @@ app.use('/', express.static(APP_PATH));
 
 // Socket server
 io.on('connection', socket => {
-	// Something
+  socket.on('join', name => {
+		console.log(name);
+  })
 });
 
 // game loop
