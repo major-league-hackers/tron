@@ -163,10 +163,12 @@ class TronGame {
     }
     if (count === 1) {
       this.io.to(this.id).emit('gameover', lastAlive.id);
-      return gameover;
+      return true;
     } else if (count === 0) {
       this.io.to(this.id).emit('gameover', "Tie");
-      return gameover;
+      return true;
+    } else {
+      return false;
     }
   }
 
