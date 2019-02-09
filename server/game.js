@@ -107,6 +107,11 @@ class TronGame {
         newGrid[i] = new Array(100);
     }
 
+    for (let i = 0; i < newGrid.length; i++){
+      for (let j = 0; j < newGrid.length; j++){
+        newGrid[i][j] = 0;
+      }
+    }
     return newGrid;
   }
 
