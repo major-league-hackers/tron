@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/major-league-hackers/troon#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
   }
 }
