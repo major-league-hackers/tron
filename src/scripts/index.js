@@ -27,7 +27,7 @@ canvas.height = canvasSize;
 const joinGame = () => {
   socket.emit('join', "Mark");
   context.fillStyle = "Black";
-  context.fillRect(0, 0, 600, 600);
+  context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 const showWinText = (text) => {
@@ -40,7 +40,11 @@ const hideWinText = () => {
 }
 
 socket.on("gameover", winner => {
-  showWinText(`${colors[winner]} won!`);
+  if (typeof winner === 'string') {
+    showWinText(`Tie!`);
+  } else {
+    showWinText(`${colors[winner]} won!`);
+  }
   setTimeout(() => {
     joinGame();
     hideWinText();
