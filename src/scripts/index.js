@@ -33,6 +33,7 @@ for (let i = 0; i < newGrid.length; i++) {
 
 socket.on("update", data => {
   newGrid = data
+  draw();
 });
 
 function draw() {
@@ -46,9 +47,10 @@ function draw() {
     }
   }
 
-  window.requestAnimationFrame(draw);
+  // window.requestAnimationFrame(draw);
 }
-draw();
+
+// draw();
 
 window.addEventListener('keydown', function(e) {
   if (e.keyCode == 38) { 			//up
