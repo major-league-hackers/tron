@@ -9,12 +9,14 @@ let players = new Array(8);
 
 let running = false;
 
-function TronPlayer(id) {
-  this.id = id;
-  this.isAlive = true;
-  this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
-  this.x_pos = (Math.random * 80) + 10;
-  this.y_pos = (Math.random * 80) + 10;
+class TronPlayer {
+  constructor() {
+    this.id = id;
+    this.isAlive = true;
+    this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
+    this.x_pos = (Math.random * 80) + 10;
+    this.y_pos = (Math.random * 80) + 10;
+  }
 }
 
 
