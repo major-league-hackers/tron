@@ -71,7 +71,7 @@ class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 3;
+const MAX_PLAYERS = 2;
 class TronGame {
   constructor(io) {
     this.io = io;
@@ -153,18 +153,23 @@ class TronGame {
   }
 
   endGame() {
+    let lastAlive;
     let count = 0;
-    for(let player of this.getPlayerArray()) {
-      if(player.isAlive == true) {
+    for (let player of this.getPlayerArray()) {
+      if (player.isAlive) {
+        lastAlive = player;
         count++;
       }
     }
-    return count === 1;
+    const gameover = count === 1
+    if (gameover) {
+      this.io.to(this.id).emit('gameover', lastAlive.id);
+    }
+    return gameover;
   }
 
   destroy() {
     for (let player of this.getPlayerArray()) {
-      player.socket.emit('gameover');
       player.socket.leave(this.id);
     }
   }

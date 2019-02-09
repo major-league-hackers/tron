@@ -7,31 +7,39 @@ socket.on('connect', e => console.log("socket.io connection open"));
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
-canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
-<<<<<<< Updated upstream
-=======
-//context.fillStyle = "Black";
-//context.fillRect(0,0,600,600);
->>>>>>> Stashed changes
+
+let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
+
+// Display text
+let displayText = document.createElement('h1');
+displayText.id = "text";
+document.body.appendChild(displayText);
 
 const joinGame = () => {
   socket.emit('join', "Mark");
   context.fillStyle = "Black";
-  context.fillRect(0,0,600,600);
+  context.fillRect(0, 0, 600, 600);
 }
 
-socket.on("gameover", () => {
-  console.log("Game Over");
-  joinGame();
+const showText = (text) => {
+  displayText.innerText = text;
+  displayText.style.display = "block";
+}
+
+socket.on("gameover", winner => {
+  showText(`${colors[winner]} won!`);
+  setTimeout(() => {
+    joinGame();
+  }, 3000);
 });
 
 
 joinGame();
 
-let colors = ["Black", "Cyan", "Tomato", "Yellow", "Magenta", "Orange", "Black", "White"];
+
 
 let direction = 0;
 
