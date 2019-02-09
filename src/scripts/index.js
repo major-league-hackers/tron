@@ -18,8 +18,9 @@ let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
 const context = canvas.getContext("2d");
-canvas.width = 600;
-canvas.height = 600;
+const canvasSize = window.innerHeight * 0.9;
+canvas.width = canvasSize;
+canvas.height = canvasSize;
 
 
 
@@ -29,15 +30,20 @@ const joinGame = () => {
   context.fillRect(0, 0, 600, 600);
 }
 
-const showText = (text) => {
+const showWinText = (text) => {
   displayText.innerText = text;
   displayText.style.display = "block";
 }
 
+const hideWinText = () => {
+  displayText.style.display = "none";
+}
+
 socket.on("gameover", winner => {
-  showText(`${colors[winner]} won!`);
+  showWinText(`${colors[winner]} won!`);
   setTimeout(() => {
     joinGame();
+    hideWinText();
   }, 3000);
 });
 
