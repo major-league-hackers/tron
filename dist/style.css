@@ -12,7 +12,7 @@ html {
   left: 50%;
   transform: translate(-50%, -50%);
 	background: "#727882";
-	border: 5px solid white;
+	/*border: 5px solid white;*/
 }
 #player{
 	z-index: -1;
