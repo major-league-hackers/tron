@@ -5,6 +5,7 @@ socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
 socket.emit('join', "Mark");
+socket.on("update", data => console.log(data));
 
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";

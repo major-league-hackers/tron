@@ -16,8 +16,8 @@ class TronPlayer {
     this.name = name;
     this.isAlive = true;
     this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
-    this.x_pos = (Math.random * 80) + 10;
-    this.y_pos = (Math.random * 80) + 10;
+    this.x_pos = Math.round(Math.random() * 80) + 10;
+    this.y_pos = Math.round(Math.random() * 80) + 10;
   }
 
   setId(id) {
@@ -42,39 +42,39 @@ class TronPlayer {
     //right
     if (direction == 1) {
       //move the head
-      player.x_pos += 1;
-      player.currentDirection = 1;
+      this.x_pos += 1;
+      this.currentDirection = 1;
 
       //left
     } else if (direction == 2) {
       //move the head
-      player.x_pos -= 1;
-      player.currentDirection = 2;
+      this.x_pos -= 1;
+      this.currentDirection = 2;
 
       //up
     } else if (direction == 3){
       //move the head
-      player.y_pos -= 1;
-      player.currentDirection = 3;
+      this.y_pos -= 1;
+      this.currentDirection = 3;
 
       //down
     } else if (direction == 4){
 
       //move the head
-      player.y_pos += 1;
-      player.currentDirection = 4;
+      this.y_pos += 1;
+      this.currentDirection = 4;
     }
 
-    let id = grid[player.x_pos][player.y_pos]
+    let id = grid[this.x_pos][this.y_pos]
     if (id !=  0) {
       this.kill();
     }
 
-    if (player.x_pos < 0 || player.y_pos < 0 || player.x_pos  > canvas.width || player.y_pos > canvas.height) {
+    if (this.x_pos < 0 || this.y_pos < 0 || this.x_pos  > 100 || this.y_pos > 100) {
       this.kill();
     }
 
-    grid[player.x_pos][player.y_pos] = player.id;
+    grid[this.x_pos][this.y_pos] = this.id;
   }
 
   kill() {
@@ -117,7 +117,7 @@ class TronGame {
       for (let player of this.getPlayerArray()) {
         player.move(this.grid);
       }
-      sendData();
+      this.sendData();
       // if (endGame()) {
       //   newGame();
       // }
@@ -139,11 +139,11 @@ class TronGame {
 
   sendData() {
     //print some stuff
-    for (let player of Object.values(this.players)) {
+    for (let player of this.getPlayerArray()) {
       console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
       console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
     }
-    io.sockets.emit('update', this.grid);
+    this.io.sockets.emit('update', this.grid);
   }
 }
 
