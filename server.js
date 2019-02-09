@@ -6,7 +6,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const bodyParser = require('body-parser');
 
-const game = require('./server/game.js');
+import { TronGame, TronPlayer } from './server/game.js';
 
 const APP_PATH = path.join(__dirname, 'dist');
 app.use(bodyParser.json());
@@ -14,10 +14,15 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', express.static(APP_PATH));
 
 // Socket server
+const game = new TronGame();
 io.on('connection', socket => {
   socket.on('join', name => {
-		console.log(name);
-  })
+		const player = new TronPlayer(socket.id);
+    game.addPlayer(player);
+  });
+  socket.on('disconnect', () => {
+		// something
+  });
 });
 
 // game loop
@@ -27,7 +32,7 @@ const hrtimeMs = function() {
     return time[0] * 1000 + time[1] / 1000000;
 }
 
-const TICK_RATE = 20;
+const TICK_RATE = 30;
 let tick = 0;
 let previous = hrtimeMs();
 let tickLengthMs = 1000 / TICK_RATE;

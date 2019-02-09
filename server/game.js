@@ -9,16 +9,116 @@ let players = new Array(8);
 
 let running = false;
 
-class TronPlayer {
-  constructor() {
-    this.id = id;
+export class TronPlayer {
+  constructor(socketId) {
+    this.socketId;
+    this.id;
     this.isAlive = true;
     this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
     this.x_pos = (Math.random * 80) + 10;
     this.y_pos = (Math.random * 80) + 10;
   }
+
+  setId(id) {
+    this.id = id;
+  }
+
+  move(grid) {
+    //right = 1
+    //left = 2
+    //up = 3
+    //down = 4
+    // If it's not alive don't move
+    if (!this.isAlive) {
+      return;
+    }
+
+    const direction = this.currentDirection;
+    //right
+    if (direction == 1) {
+      //move the head
+      player.x_pos += 1;
+      player.currentDirection = 1;
+
+      //left
+    } else if (direction == 2) {
+      //move the head
+      player.x_pos -= 1;
+      player.currentDirection = 2;
+
+      //up
+    } else if (direction == 3){
+      //move the head
+      player.y_pos -= 1;
+      player.currentDirection = 3;
+
+      //down
+    } else if (direction == 4){
+
+      //move the head
+      player.y_pos += 1;
+      player.currentDirection = 4;
+    }
+
+    let id = grid[player.x_pos][player.y_pos]
+    if (id !=  0) {
+      this.kill();
+    }
+
+    if (player.x_pos < 0 || player.y_pos < 0 || player.x_pos  > canvas.width || player.y_pos > canvas.height) {
+      this.kill();
+    }
+
+    grid[player.x_pos][player.y_pos] = player.id;
+  }
+
+  kill() {
+    this.isAlive = false;
+  }
 }
 
+const MAX_PLAYERS = 8;
+export class TronGame {
+  constructor() {
+    this.running = false;
+    this.players = {};
+    this.grid = this.makeGrid();
+  }
+
+  addPlayer(player) {
+    this.players[player.socketId] = player;
+    player.setId(this.player.length);
+    if (this.players === MAX_PLAYERS) {
+      this.startGame();
+    }
+  }
+
+  // initialize a game grid 100x100 square
+  makeGrid() {
+    let newGrid = new Array(100);
+
+    for (let i = 0; i < grid.length; i++) {
+        newGrid[i] = new Array(100);
+    }
+
+    return newGrid;
+  }
+
+  tick() {
+    if (this.running) {
+      for (let player in Object.values(this.players)) {
+        player.move(this.grid);
+      }
+      if (endGame()) {
+        newGame();
+      }
+    }
+  }
+
+  startGame() {
+    this.running = true;
+  }
+}
 
 function newGame() {
   grid = makeNewGrid();
@@ -27,19 +127,8 @@ function newGame() {
 
   for (let i = 0; i < players.length; i++) {
     players[i].x_pos = (Math.random * 80) + 10;
-  players[i].y_pos = (Math.random * 80) + 10;
+    players[i].y_pos = (Math.random * 80) + 10;
   }
-}
-
-// initialize a game grid 100x100 square
-function makeNewGrid() {
-  let newGrid = new Array(100);
-
-  for (let i = 0; i < grid.length; i++) {
-      newGrid[i] = new Array(100);
-  }
-
-  return newGrid;
 }
 
 
@@ -81,56 +170,6 @@ function sendData() {
 }
 
 
-//right = 1
-//left = 2
-//up = 3
-//down = 4
-function move(player) {
-  let direction = player.currentDirection;
-
-  //right
-  if (direction == 1) {
-    //move the head
-    player.x_pos += 1;
-    player.currentDirection = 1;
-
-    //left
-  } else if (direction == 2) {
-    //move the head
-    player.x_pos -= 1;
-    player.currentDirection = 2;
-
-    //up
-  } else if (direction == 3){
-    //move the head
-    player.y_pos -= 1;
-    player.currentDirection = 3;
-
-    //down
-  } else if (direction == 4){
-
-    //move the head
-    player.y_pos += 1;
-    player.currentDirection = 4;
-  }
-
-  grid[player.x_pos][player.y_pos] = player.id;
-
-  let id = grid[player.x_pos][player.y_pos]
-  if ( id !=  0) {
-    killPlayer(player);
-  }
-
-  if (player.x_pos < 0 || player.y_pos < 0 || player.x_pos  > canvas.width || player.y_pos > canvas.height) {
-    killPlayer(player);
-  }
-
-};
-
-function killPlayer(player) {
-  player.isAlive = false;
-}
-
 function getHead(player){
     return [player.x_pos, player.y_pos];
 };
@@ -148,5 +187,3 @@ function endGame(players) {
   }
   return false;
 }
-
-exports.tick = tick
