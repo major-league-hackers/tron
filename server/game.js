@@ -1,13 +1,4 @@
-let top_wall = 0;
-let bot_wall = 100;
-let right_wall = 100;
-let left_wall = 0;
-
-let grid;
-
-let players = new Array(8);
-
-let running = false;
+const shortid = require('shortid');
 
 class TronPlayer {
   constructor(socketId, name) {
@@ -83,19 +74,28 @@ const MAX_PLAYERS = 1;
 class TronGame {
   constructor(io) {
     this.io = io;
+    this.id = shortid.generate();
     this.running = false;
     this.players = {};
     this.grid = this.makeGrid();
   }
 
-  addPlayer(player) {
-    this.players[player.socketId] = player;
-    player.setId(this.getPlayerArray().length);
+  addPlayer(socketId, name) {
+    this.players[socketId] = new TronPlayer(socketId, name);
+    this.players[socketId].setId(this.getPlayerArray().length);
     // console.log(this.getPlayerArray());
     // console.log(this.getPlayerArray().length);
     if (this.getPlayerArray().length === MAX_PLAYERS) {
       this.startGame();
     }
+  }
+
+  removePlayer(socketId) {
+    delete this.players[socketId];
+  }
+
+  gameIsFull() {
+    return this.getPlayerArray().length === MAX_PLAYERS;
   }
 
   // initialize a game grid 100x100 square
@@ -144,12 +144,20 @@ class TronGame {
   }
 
   sendData() {
-    //print some stuff
-    for (let player of this.getPlayerArray()) {
-      // console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
-      // console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
-    }
     this.io.sockets.emit('update', this.grid);
+  }
+
+  endGame() {
+    let count = 0;
+    for(let player of this.getPlayerArray()) {
+      if(player.isAlive == true) {
+        count++;
+      }
+    }
+    if(count == 0) {
+      return true;
+    }
+    return false;
   }
 }
 
@@ -211,15 +219,3 @@ exports.TronPlayer = TronPlayer;
 // };
 //
 // // return true if there is only one player left alive
-// function endGame(players) {
-//   let count = 0;
-//   for(let i = 0; i < players; i++) {
-//     if(players[i].isAlive == true) {
-//       count++;
-//     }
-//   }
-//   if(count == 1) {
-//     return true;
-//   }
-//   return false;
-// }
