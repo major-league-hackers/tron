@@ -70,7 +70,7 @@ class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 4;
+const MAX_PLAYERS = 1;
 class TronGame {
   constructor(io) {
     this.io = io;
