@@ -33,9 +33,10 @@ function drawCanvas() {
       canvas.getContext("2d").fillRect(i * tileSize, j * tileSize, i * tileSize + (tileSize), j * tileSize + (tileSize));
     }
   }
+
+  window.requestAnimationFrame(drawCanvas);
 }
 
-drawCanvas();
 
 function setDirection(player, direction) {
   player.currentDirection = direction;
