@@ -71,7 +71,13 @@ function tick(){
 }
 
 function sendData() {
-
+    //print some stuff
+    for (let i = 0; i < players.length; i++){
+      console.log(i);
+        console.log("player " + i + " has location x: " + players[i].x_pos + ", y: " + players[i].y_pos + "\n");
+        console.log("player " + i + " is alive (T or F): " + players[i].isAlive + "\n");
+    }
+    console.log(grid);
 }
 
 
