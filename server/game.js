@@ -15,7 +15,7 @@ class TronPlayer {
     this.id;
     this.name = name;
     this.isAlive = true;
-    this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
+    this.direction = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
     this.x_pos = Math.round(Math.random() * 80) + 10;
     this.y_pos = Math.round(Math.random() * 80) + 10;
   }
@@ -25,7 +25,7 @@ class TronPlayer {
   }
 
   setDirection(direction) {
-    this.currentDirection = direction;
+    this.direction = direction;
   }
 
   move(grid) {
@@ -38,7 +38,7 @@ class TronPlayer {
       return;
     }
 
-    const direction = this.currentDirection;
+    const direction = this.direction;
     //right
     if (direction == 1) {
       //move the head
@@ -134,7 +134,13 @@ class TronGame {
 
   setPlayerDirection(socketId, direction) {
     console.log(`${socketId}: ${direction}`);
-    this.players[socketId].setDirection(direction);
+    const player = this.players[socketId];
+    if (direction === 1 && player.direction !== 2
+      || direction === 2 && player.direction !== 1
+      || direction === 3 && player.direction !== 4
+      || direction === 4 && player.direction  !== 3) {
+      player.setDirection(direction);
+    }
   }
 
   sendData() {
