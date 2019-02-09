@@ -40,7 +40,9 @@ function draw() {
   for (let i = 0; i < newGrid.length; i++) {
     for (let j = 0; j < newGrid.length; j++) {
       canvas.getContext("2d").fillStyle = colors[newGrid[i][j]];
-      canvas.getContext("2d").fillRect(i * tileSize, j * tileSize, i * tileSize + (tileSize), j * tileSize + (tileSize));
+      if (newGrid[i][j] !== 0) {
+      	canvas.getContext("2d").fillRect(i * tileSize, j * tileSize, tileSize, tileSize);
+      }
     }
   }
 
