@@ -4,6 +4,16 @@ const socket = new io.connect(window.location.href.replace(/^http/, "ws"));
 socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
+let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
+
+socket.on('init', id => {
+    let displayPlayer = document.createElement('h1');
+    displayPlayer.id = "player";
+    displayPlayer.innerText = "You are " + colors[id];
+    document.body.appendChild(displayPlayer);
+  });
+
+
 let canvas = document.createElement('canvas');
 canvas.id = "canvas";
 document.body.appendChild(canvas);
@@ -12,12 +22,7 @@ const canvasSize = window.innerHeight * 0.9;
 canvas.width = canvasSize;
 canvas.height = canvasSize;
 
-let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
 
-// Display text
-let displayText = document.createElement('h1');
-displayText.id = "text";
-document.body.appendChild(displayText);
 
 const joinGame = () => {
   socket.emit('join', "Mark");
