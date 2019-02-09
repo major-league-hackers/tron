@@ -11,7 +11,7 @@ let running = false;
 
 class TronPlayer {
   constructor(socketId, name) {
-    this.socketId;
+    this.socketId = socketId;
     this.id;
     this.name = name;
     this.isAlive = true;
@@ -94,6 +94,8 @@ class TronGame {
   addPlayer(player) {
     this.players[player.socketId] = player;
     player.setId(this.getPlayerArray().length);
+    console.log(this.getPlayerArray());
+    console.log(this.getPlayerArray().length);
     if (this.getPlayerArray().length === MAX_PLAYERS) {
       this.startGame();
     }
@@ -112,7 +114,7 @@ class TronGame {
 
   tick() {
     if (this.running) {
-      for (let player in this.getPlayerArray()) {
+      for (let player of this.getPlayerArray()) {
         player.move(this.grid);
       }
       sendData();
@@ -137,7 +139,7 @@ class TronGame {
 
   sendData() {
     //print some stuff
-    for (let player in Object.values(this.players)) {
+    for (let player of Object.values(this.players)) {
       console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
       console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
     }
