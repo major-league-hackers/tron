@@ -8,9 +8,10 @@ const bodyParser = require('body-parser');
 
 const game = require('./server/game.js');
 
+const APP_PATH = path.join(__dirname, 'dist');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(APP_PATH));
 
 // Socket server
 io.on('connection', socket => {

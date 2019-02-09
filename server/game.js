@@ -23,7 +23,7 @@ function newGame() {
 
   running = false;
 
-  for (let i = 0; i < players.length; i++)
+  for (let i = 0; i < players.length; i++) {
     players[i].x_pos = (Math.random * 80) + 10;
   players[i].y_pos = (Math.random * 80) + 10;
   }
