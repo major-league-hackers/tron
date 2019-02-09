@@ -31,31 +31,31 @@ class TronPlayer {
     } else if (this.id === 2) {
       this.x_pos = 33;
       this.y_pos = 40;
-      this.direction = 2;      
+      this.direction = 2;
     } else if (this.id === 3) {
       this.x_pos = 33;
       this.y_pos = 60;
-      this.direction = 2;      
+      this.direction = 2;
     } else if (this.id === 4) {
       this.x_pos = 33;
       this.y_pos = 80;
-      this.direction = 2;      
+      this.direction = 2;
     } else if (this.id === 5) {
       this.x_pos = 66;
       this.y_pos = 20;
-      this.direction = 1;      
+      this.direction = 1;
     } else if (this.id === 6) {
       this.x_pos = 66;
       this.y_pos = 40;
-      this.direction = 1;      
+      this.direction = 1;
     } else if (this.id === 7) {
       this.x_pos = 66;
       this.y_pos = 60;
-      this.direction = 1;      
+      this.direction = 1;
     } else if (this.id === 8) {
       this.x_pos = 66;
       this.y_pos = 80;
-      this.direction = 1;      
+      this.direction = 1;
     }
   }
 
@@ -130,9 +130,6 @@ class TronGame {
     // console.log(this.getPlayerArray());
     // console.log(this.getPlayerArray().length);
     this.sendData();
-    if (this.getPlayerArray().length === MAX_PLAYERS) {
-      this.startGame();
-    }
   }
 
   removePlayer(socketId) {

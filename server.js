@@ -29,14 +29,26 @@ const getGameForPlayer = (socketId) => {
 
 const startCountdown = (game) => {
   count = 5;
-  setTimeout(() => {
+  const countdown = () => setTimeout(() => {
+    if (game.running) {
+      return;
+    }
     if (count === 0) {
+      activateGame(waitingGame);
       game.startGame();
     } else {
       count -= 1;
       game.io.to(game.id).emit('countdown', count);
     }
+    countdown();
   }, 1000);
+  countdown();
+}
+
+const activateGame = (game) => {
+  activeGames[game.id] = game;
+  waitingGame = new TronGame(io);
+  game.startGame();
 }
 
 io.on('connection', socket => {
@@ -51,8 +63,7 @@ io.on('connection', socket => {
     activePlayers[socket.id] = waitingGame.id;
     if (waitingGame.gameIsFull()) {
       // Since the waiting game is full, add it to active games
-      activeGames[waitingGame.id] = waitingGame;
-      waitingGame = new TronGame(io);
+      activateGame(waitingGame);
     }
   });
   socket.on('direction', direction => {

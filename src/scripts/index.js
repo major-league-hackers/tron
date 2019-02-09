@@ -15,8 +15,6 @@ const canvasSize = window.innerHeight * 0.9;
 canvas.width = canvasSize;
 canvas.height = canvasSize;
 
-let colors = ["Black", "Red", "Blue", "Yellow", "Green", "Orange", "Pink", "White"];
-
 // let displayPlayer = document.createElement('h1');
 // displayPlayer.id = "player";
 
@@ -48,7 +46,12 @@ const hideMainText = () => {
 }
 
 socket.on('countdown', count => {
-  showMainText(`Starting in ${count}`);
+  if (count > 0) {
+    showMainText(`Starting in ${count}`);
+  } else {
+    hideMainText();
+  }
+
 });
 
 socket.on("gameover", winner => {
