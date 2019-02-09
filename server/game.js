@@ -10,9 +10,10 @@ let players = new Array(8);
 let running = false;
 
 export class TronPlayer {
-  constructor(socketId) {
+  constructor(socketId, name) {
     this.socketId;
     this.id;
+    this.name = name;
     this.isAlive = true;
     this.currentDirection = Math.round(Math.random() * 4) + 1;  // results in random between 1 and 4
     this.x_pos = (Math.random * 80) + 10;
@@ -21,6 +22,10 @@ export class TronPlayer {
 
   setId(id) {
     this.id = id;
+  }
+
+  setDirection(direction) {
+    this.currentDirection = direction;
   }
 
   move(grid) {
@@ -77,9 +82,10 @@ export class TronPlayer {
   }
 }
 
-const MAX_PLAYERS = 8;
+const MAX_PLAYERS = 4;
 export class TronGame {
-  constructor() {
+  constructor(io) {
+    this.io = io;
     this.running = false;
     this.players = {};
     this.grid = this.makeGrid();
@@ -109,81 +115,95 @@ export class TronGame {
       for (let player in Object.values(this.players)) {
         player.move(this.grid);
       }
-      if (endGame()) {
-        newGame();
-      }
+      sendData();
+      // if (endGame()) {
+      //   newGame();
+      // }
     }
   }
 
   startGame() {
     this.running = true;
   }
-}
 
-function newGame() {
-  grid = makeNewGrid();
-
-  running = false;
-
-  for (let i = 0; i < players.length; i++) {
-    players[i].x_pos = (Math.random * 80) + 10;
-    players[i].y_pos = (Math.random * 80) + 10;
-  }
-}
-
-
-function tick(){
-    let timer = -1;
-    for (let i = 0; i < players.length; i++) {
-        if (running) {
-          move(players[i]);
-        } else {
-          if (players.length >=2 ) {
-            if  (timer == -1) {
-                timer = 10;
-            } else if (timer == 0) {
-        running = true;
-            } else {
-                timer -= 1;
-            }
-          } else {
-            timer = -1;
-          }
-        }
-
-        sendData();
+  setPlayerDirection(socketId, direction) {
+    this.players[socketId].setDirection(direction);
   }
 
-    if (endGame()) {
-      newGame();
-    }
-}
-
-function sendData() {
+  sendData() {
     //print some stuff
-    for (let i = 0; i < players.length; i++){
-      console.log(i);
-        console.log("player " + i + " has location x: " + players[i].x_pos + ", y: " + players[i].y_pos + "\n");
-        console.log("player " + i + " is alive (T or F): " + players[i].isAlive + "\n");
+    for (let player in Object.values(this.players)) {
+      console.log(player.name + " has location x: " + player.x_pos + ", y: " + player.y_pos + "\n");
+      console.log(player.name + " is alive (T or F): " + player.isAlive + "\n");
     }
-    console.log(grid);
+    io.sockets.emit('update', this.grid);
+  }
 }
 
-
-function getHead(player){
-    return [player.x_pos, player.y_pos];
-};
-
-// return true if there is only one player left alive
-function endGame(players) {
-  let count = 0;
-  for(let i = 0; i < players; i++) {
-    if(players[i].isAlive == true) {
-      count++;
-    }
-  }
-  if(count == 1) {
-    return true;
-  }
-  return false;
-}
+// function newGame() {
+//   grid = makeNewGrid();
+//
+//   running = false;
+//
+//   for (let i = 0; i < players.length; i++) {
+//     players[i].x_pos = (Math.random * 80) + 10;
+//     players[i].y_pos = (Math.random * 80) + 10;
+//   }
+// }
+//
+//
+// function tick(){
+//     let timer = -1;
+//     for (let i = 0; i < players.length; i++) {
+//         if (running) {
+//           move(players[i]);
+//         } else {
+//           if (players.length >=2 ) {
+//             if  (timer == -1) {
+//                 timer = 10;
+//             } else if (timer == 0) {
+//         running = true;
+//             } else {
+//                 timer -= 1;
+//             }
+//           } else {
+//             timer = -1;
+//           }
+//         }
+//
+//         sendData();
+//   }
+//
+//     if (endGame()) {
+//       newGame();
+//     }
+// }
+//
+// function sendData() {
+//     //print some stuff
+//     for (let i = 0; i < players.length; i++){
+//       console.log(i);
+//         console.log("player " + i + " has location x: " + players[i].x_pos + ", y: " + players[i].y_pos + "\n");
+//         console.log("player " + i + " is alive (T or F): " + players[i].isAlive + "\n");
+//     }
+//     console.log(grid);
+// }
+//
+//
+// function getHead(player){
+//     return [player.x_pos, player.y_pos];
+// };
+//
+// // return true if there is only one player left alive
+// function endGame(players) {
+//   let count = 0;
+//   for(let i = 0; i < players; i++) {
+//     if(players[i].isAlive == true) {
+//       count++;
+//     }
+//   }
+//   if(count == 1) {
+//     return true;
+//   }
+//   return false;
+// }

@@ -14,11 +14,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/', express.static(APP_PATH));
 
 // Socket server
-const game = new TronGame();
+const game = new TronGame(io);
 io.on('connection', socket => {
   socket.on('join', name => {
-		const player = new TronPlayer(socket.id);
+		const player = new TronPlayer(socket.id, name);
     game.addPlayer(player);
+  });
+  socket.on('direction', direction => {
+    game.setPlayerDirection(socket.id, direction);
   });
   socket.on('disconnect', () => {
 		// something
