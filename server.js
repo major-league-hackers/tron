@@ -30,8 +30,10 @@ getGameForPlayer = (socketId) => {
 io.on('connection', socket => {
   socket.on('join', name => {
     console.log("Player joined");
+    // Join the unique room
+    socket.join(waitingGame.id);
     // Add the player to the game
-    waitingGame.addPlayer(socket.id, name);
+    waitingGame.addPlayer(socket, name);
     // Remember the game that the player is in
     activePlayers[socket.id] = waitingGame.id;
     if (waitingGame.gameIsFull()) {
@@ -47,6 +49,7 @@ io.on('connection', socket => {
     }
   });
   socket.on('disconnect', () => {
+    console.log("Player disconnected");
     // When the player disconnects, then remove them from the game
 		const game = getGameForPlayer(socket.id);
     // If they aren't in an active game, then remove them from the waiting
@@ -80,7 +83,9 @@ const loop = () => {
       game.tick();
       if (game.endGame()) {
         console.log("endgame");
+        game.destroy();
         delete activeGames[game.id];
+
       }
     }
     // game.update(delta, tick) // game logic would go here

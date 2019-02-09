@@ -4,6 +4,11 @@ const socket = new io.connect(window.location.href.replace(/^http/, "ws"));
 socket.on('connect_error', e => console.log("error"));
 socket.on('connect', e => console.log("socket.io connection open"));
 
+socket.on("gameover", () => {
+  console.log("Game Over");
+  socket.emit('join', "Mark");
+});
+
 socket.emit('join', "Mark");
 
 let canvas = document.createElement('canvas');

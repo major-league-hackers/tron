@@ -1,8 +1,9 @@
 const shortid = require('shortid');
 
 class TronPlayer {
-  constructor(socketId, name) {
-    this.socketId = socketId;
+  constructor(socket, name) {
+    this.socket = socket;
+    this.socketId = socket.id;
     this.id;
     this.name = name;
     this.isAlive = true;
@@ -80,9 +81,9 @@ class TronGame {
     this.grid = this.makeGrid();
   }
 
-  addPlayer(socketId, name) {
-    this.players[socketId] = new TronPlayer(socketId, name);
-    this.players[socketId].setId(this.getPlayerArray().length);
+  addPlayer(socket, name) {
+    this.players[socket.id] = new TronPlayer(socket, name);
+    this.players[socket.id].setId(this.getPlayerArray().length);
     // console.log(this.getPlayerArray());
     // console.log(this.getPlayerArray().length);
     if (this.getPlayerArray().length === MAX_PLAYERS) {
@@ -91,7 +92,11 @@ class TronGame {
   }
 
   removePlayer(socketId) {
-    delete this.players[socketId];
+    const player = this.players[socketId];
+    if (player !== undefined) {
+      player.socket.leave(this.id);
+      delete this.players[socketId];
+    }
   }
 
   gameIsFull() {
@@ -133,7 +138,7 @@ class TronGame {
   }
 
   setPlayerDirection(socketId, direction) {
-    console.log(`${socketId}: ${direction}`);
+    // console.log(`${socketId}: ${direction}`);
     const player = this.players[socketId];
     if (direction === 1 && player.direction !== 2
       || direction === 2 && player.direction !== 1
@@ -144,7 +149,7 @@ class TronGame {
   }
 
   sendData() {
-    this.io.sockets.emit('update', this.grid);
+    this.io.to(this.id).emit('update', this.grid);
   }
 
   endGame() {
@@ -159,10 +164,16 @@ class TronGame {
     }
     return false;
   }
+
+  destroy() {
+    this.io.to(this.id).emit('gameover');
+    for (let player of this.getPlayerArray()) {
+      player.socket.leave(this.id);
+    }
+  }
 }
 
 exports.TronGame = TronGame;
-exports.TronPlayer = TronPlayer;
 
 // function newGame() {
 //   grid = makeNewGrid();
