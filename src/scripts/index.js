@@ -96,6 +96,7 @@ for (let i = 0; i < newGrid.length; i++) {
 socket.on("update", data => {
   newGrid = data
   draw();
+  socket.emit('drawComplete');
 });
 
 function draw() {

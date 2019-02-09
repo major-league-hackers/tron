@@ -22,6 +22,8 @@ const activeGames = {};
 // Stores the socketid and gameId
 const activePlayers = {};
 
+let responses = 0;
+
 const getGameForPlayer = (socketId) => {
   const gameId = activePlayers[socketId];
   return activeGames[gameId];
@@ -49,6 +51,7 @@ const startCountdown = (game) => {
 const activateGame = (game) => {
   activeGames[game.id] = game;
   waitingGame = new TronGame(io);
+  responses = Object.keys(activePlayers).length;
   game.startGame();
 }
 
@@ -82,6 +85,9 @@ io.on('connection', socket => {
       game.removePlayer(socket.id);
     }
   });
+  socket.on('drawComplete', () => {
+    responses += 1;
+  });
 });
 
 // game loop
@@ -91,23 +97,29 @@ const hrtimeMs = function() {
     return time[0] * 1000 + time[1] / 1000000;
 }
 
-const TICK_RATE = 20;
+const TICK_RATE = 60;
 let tick = 0;
 let previous = hrtimeMs();
 let tickLengthMs = 1000 / TICK_RATE;
 
 const loop = () => {
+
     setTimeout(loop, tickLengthMs)
     let now = hrtimeMs();
     let delta = (now - previous) / 1000;
     for (let game of Object.values(activeGames)) {
-      game.tick();
+      if (responses >= Object.keys(activePlayers).length) {
+        game.tick();
+        console.log('ticking');
+        responses = 0;
+      }
       if (game.endGame()) {
         console.log("endgame");
         game.destroy();
         delete activeGames[game.id];
 
       }
+
     }
     // game.update(delta, tick) // game logic would go here
     previous = now
