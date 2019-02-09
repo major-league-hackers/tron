@@ -42,7 +42,7 @@ const startCountdown = (game) => {
       game.sendData();
     }
     countdown();
-  }, 1000);
+  }, 2000);
   countdown();
 }
 

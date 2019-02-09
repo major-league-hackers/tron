@@ -6,6 +6,7 @@
   "scripts": {
     "bundle": "webpack --config webpack.config.js",
     "prestart": "npm run bundle",
+    "build": "webpack --config webpack.config.js",
     "start": "node server.js"
   },
   "repository": {
@@ -20,15 +21,13 @@
   "homepage": "https://github.com/major-league-hackers/troon#readme",
   "dependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
     "babel-loader": "^8.0.5",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "shortid": "^2.2.14",
     "socket.io": "^2.2.0",
-    "webpack": "^4.29.3"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.3.1",
+    "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
-  }
+  },
 }
